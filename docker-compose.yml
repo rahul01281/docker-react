@@ -1,0 +1,21 @@
+version: '3'
+services:
+  web:
+    stdin_open: true
+    build:
+      context: . #where we want all the file and folders for this image to be pulled from
+      dockerfile: Dockerfile.dev
+    ports:
+      - '3000:3000'
+    volumes:
+      - /app/node_modules
+      - .:/app
+  #container that is responsible for running our tests and rerunning anytime any file inside the volume is changed
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - .:/app
+    command: ['npm', 'run', 'test'] #override the starting command when this test service or container is created
