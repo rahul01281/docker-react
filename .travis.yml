@@ -1,0 +1,12 @@
+# any time travis sees we have pushed a new commit to github, it's gonna clone all the code and use these series of directions to build our docker image, run the tests and report whether the tests passed or not
+
+sudo: required # means we need super level permissions in order to execute this build
+language: generic
+services:
+  - docker # by adding this travis CI is automatically going to install a copy of docker into the running container
+
+before_install:
+  - docker build -t rahul01281/docker-react -f Dockerfile.dev . # series of different commands that get executed before the tests are ran. In this case here we want to attempt to build our docker image before the tests run
+
+script: # contains all the different commands that need to be executedto actually run the test suites
+  - docker run -e CI=true rahul01281/docker-react npm run test
